@@ -1,6 +1,6 @@
 public class ArithmeticCalculators {
 
-    public static String expression;
+    public String expression;
 
 
     public ArithmeticCalculators(String path) {
@@ -90,7 +90,16 @@ public class ArithmeticCalculators {
     }
 
     public static void main(String[] args) {
-        ArithmeticCalculators.StacksCalculator assignment2 = new ArithmeticCalculators("expression3.txt").new StacksCalculator();
-        System.out.print(assignment2.evaluate());
+        ArithmeticCalculators.StacksCalculator assignment2Example1 = new ArithmeticCalculators("expression1.txt").new StacksCalculator();
+        ArithmeticCalculators.StacksCalculator assignment2Example2 = new ArithmeticCalculators("expression2.txt").new StacksCalculator();
+        ArithmeticCalculators.StacksCalculator assignment2Example3 = new ArithmeticCalculators("expression3.txt").new StacksCalculator();
+        ArithmeticCalculators.StacksCalculator assignment2Example4 = new ArithmeticCalculators("expression4.txt").new StacksCalculator();
+        ArithmeticCalculators.StacksCalculator assignment2Example5 = new ArithmeticCalculators("expression5.txt").new StacksCalculator();
+
+        IO.printResult("Example1.txt", assignment2Example1.evaluate().toString());
+        IO.printResult("Example2.txt", assignment2Example2.evaluate().toString());
+        IO.printResult("Example3.txt", assignment2Example3.evaluate().toString());
+        IO.printResult("Example4.txt", assignment2Example4.evaluate().toString());
+        IO.printResult("Example5.txt", assignment2Example5.evaluate().toString());
     }
 }
