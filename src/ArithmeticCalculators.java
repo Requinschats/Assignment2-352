@@ -1,13 +1,15 @@
 public class ArithmeticCalculators {
 
-    public String expression;
+    public static String[] expressions;
 
-    public ArithmeticCalculators(String path) {
-        expression = IO.getExpression(path);
+    public ArithmeticCalculators(String path, int numberOfExpressions) {
+        expressions = IO.getExpression(path, numberOfExpressions);
     }
 
     public class StacksCalculator {
-        public Integer evaluate() {
+        String[] expressions = ArithmeticCalculators.expressions;
+
+        public Integer evaluate(String expression) {
             Stack values = new Stack(expression.length());
             Stack operations = new Stack(expression.length());
             char[] tokens = expression.toCharArray();
@@ -46,9 +48,6 @@ public class ArithmeticCalculators {
                     case '-':
                     case '*':
                     case '/':
-                    case '=':
-                    case '<':
-                    case '>':
                         while (!operations.isEmpty() && precedence(tokens[i], (Character) operations.peek())) {
                             values.push(applyOp((Character) operations.pop(), (Integer) values.pop(), (Integer) values.pop()));
                         }
@@ -68,6 +67,12 @@ public class ArithmeticCalculators {
                         values.push(Integer.parseInt(sbuf2.toString()));
                         i--;
                         values.push(applyOp((Character) operations.pop(), (Integer) values.pop(), (Integer) values.pop()));
+                        break;
+                    case '=':
+                    case '<':
+                    case '>':
+                        operations.push(tokens[i]);
+                        break;
                 }
             }
 
@@ -118,16 +123,11 @@ public class ArithmeticCalculators {
     }
 
     public static void main(String[] args) {
-        ArithmeticCalculators.StacksCalculator assignment2Example1 = new ArithmeticCalculators("expression1.txt").new StacksCalculator();
-        ArithmeticCalculators.StacksCalculator assignment2Example2 = new ArithmeticCalculators("expression2.txt").new StacksCalculator();
-        ArithmeticCalculators.StacksCalculator assignment2Example3 = new ArithmeticCalculators("expression3.txt").new StacksCalculator();
-        ArithmeticCalculators.StacksCalculator assignment2Example4 = new ArithmeticCalculators("expression4.txt").new StacksCalculator();
-        ArithmeticCalculators.StacksCalculator assignment2Example5 = new ArithmeticCalculators("expression5.txt").new StacksCalculator();
-
-        IO.printResult("Example1.txt", assignment2Example1.evaluate().toString());
-        IO.printResult("Example2.txt", assignment2Example2.evaluate().toString());
-        IO.printResult("Example3.txt", assignment2Example3.evaluate().toString());
-        IO.printResult("Example4.txt", assignment2Example4.evaluate().toString());
-        IO.printResult("Example5.txt", assignment2Example5.evaluate().toString());
+        final int NUMBER_OF_EXPRESSIONS = 5;
+        ArithmeticCalculators.StacksCalculator assignment2Example1 = new ArithmeticCalculators("expression1.txt", NUMBER_OF_EXPRESSIONS).new StacksCalculator();
+        for (int i = 0; i < NUMBER_OF_EXPRESSIONS; i++) {
+            assignment2Example1.expressions[i] = assignment2Example1.expressions[i].replace("null", "");
+            IO.printResult("Example1Answers.txt", assignment2Example1.evaluate(assignment2Example1.expressions[i]).toString());
+        }
     }
 }
