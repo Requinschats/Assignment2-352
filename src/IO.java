@@ -25,7 +25,7 @@ import java.util.Arrays;
     public static void printResult(String outputFileName, String content) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new FileWriter(outputFileName));
+            writer = new PrintWriter(new FileWriter(outputFileName, false));
             writer.print(content);
         } catch (Exception e) {
             System.out.print(Arrays.toString(e.getStackTrace()));

@@ -2,7 +2,6 @@ public class ArithmeticCalculators {
 
     public String expression;
 
-
     public ArithmeticCalculators(String path) {
         expression = IO.getExpression(path);
     }
@@ -47,11 +46,28 @@ public class ArithmeticCalculators {
                     case '-':
                     case '*':
                     case '/':
+                    case '=':
+                    case '<':
+                    case '>':
                         while (!operations.isEmpty() && precedence(tokens[i], (Character) operations.peek())) {
                             values.push(applyOp((Character) operations.pop(), (Integer) values.pop(), (Integer) values.pop()));
                         }
                         operations.push(tokens[i]);
                         break;
+                    case '!':
+                        operations.push(tokens[i]);
+                        values.push(applyOp((Character) operations.pop(), (Integer) values.pop(), 1));
+                        break;
+                    case '^':
+                        operations.push(tokens[i]);
+                        i++;
+                        StringBuilder sbuf2 = new StringBuilder();
+                        while (i < tokens.length && tokens[i] >= '0' && tokens[i] <= '9') {
+                            sbuf2.append(tokens[i++]);
+                        }
+                        values.push(Integer.parseInt(sbuf2.toString()));
+                        i--;
+                        values.push(applyOp((Character) operations.pop(), (Integer) values.pop(), (Integer) values.pop()));
                 }
             }
 
@@ -80,6 +96,18 @@ public class ArithmeticCalculators {
                         throw new UnsupportedOperationException("Cannot divide by zero");
                     }
                     return rightSide / leftSide;
+                case '!':
+                    int result = 1;
+                    for (int factor = 2; factor <= leftSide; factor++) {
+                        result *= factor;
+                    }
+                    return result;
+                case '^':
+                    Integer result2 = 1;
+                    for (int i = 1; i <= leftSide; i++) {
+                        result2 *= rightSide; //inverted LHS and RHS
+                    }
+                    return result2;
             }
             return 0;
         }
